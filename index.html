@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classic Snake Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-wrapper">
+    <header class="header">
+      <div class="header-left">
+        <h1 class="game-title">SNAKE</h1>
+        <div class="ai-controls">
+          <button id="ai-mode-btn" class="ai-toggle-btn" title="Toggle AI Autopilot (M key)">
+            <span class="ai-icon">🤖</span>
+            <span id="ai-mode-label">AI Autopilot: OFF</span>
+          </button>
+          <button id="ai-inspector-btn" class="icon-btn active" title="Toggle AI Decision Inspector">
+            📊
+          </button>
+        </div>
+      </div>
+      <div class="header-controls">
+        <div class="speed-control" id="manual-speed-control">
+          <button id="speed-dec" class="speed-btn" title="Decrease Speed (- or [)" aria-label="Decrease Speed">−</button>
+          <div class="score-card speed-card">
+            <span class="score-label">SPEED</span>
+            <span id="speed-value" class="score-value">3</span>
+          </div>
+          <button id="speed-inc" class="speed-btn" title="Increase Speed (+ or ])" aria-label="Increase Speed">+</button>
+        </div>
+        <div class="score-container">
+          <div class="score-card">
+            <span class="score-label">SCORE</span>
+            <span id="current-score" class="score-value">0</span>
+          </div>
+          <div class="score-card">
+            <span class="score-label">BEST</span>
+            <span id="high-score" class="score-value">0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="game-content-layout">
+      <main class="canvas-container">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Overlay for Start, Pause, and Game Over -->
+        <div id="game-overlay" class="overlay">
+          <div class="overlay-content">
+            <h2 id="overlay-title">SNAKE</h2>
+            <p id="overlay-msg">Press Space, Arrow keys, or Click to Play<br><small style="color:#38bdf8;">Press <strong>M</strong> anytime to toggle Laya AI Autopilot</small></p>
+            <button id="overlay-btn" class="btn primary-btn">Play</button>
+          </div>
+        </div>
+
+        <!-- Connection / AI Error Overlay -->
+        <div id="ai-error-overlay" class="overlay hidden">
+          <div class="overlay-content error-content">
+            <h2 class="gameover">LAYA API ERROR</h2>
+            <p id="ai-error-msg">Could not connect to Laya model at <code>http://127.0.0.1:8000</code>.<br>Make sure the model server is running.</p>
+            <div class="error-actions">
+              <button id="ai-retry-btn" class="btn primary-btn">Retry Move</button>
+              <button id="ai-fallback-manual-btn" class="btn secondary-btn">Switch to Manual</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Live AI Decision Telemetry Panel -->
+      <aside id="ai-panel" class="ai-panel">
+        <div class="ai-panel-header">
+          <div class="ai-panel-title">
+            <span class="panel-icon">⚡</span>
+            <span>LAYA DECISION ENGINE</span>
+          </div>
+          <span id="ai-status-pill" class="ai-status-pill ready">● Connected</span>
+        </div>
+
+        <!-- Top Metrics Cards -->
+        <div class="ai-metrics-grid">
+          <div class="ai-metric-card">
+            <span class="metric-label">CHOSEN MOVE</span>
+            <span id="ai-chosen-val" class="metric-val">-</span>
+          </div>
+          <div class="ai-metric-card">
+            <span class="metric-label">CONFIDENCE</span>
+            <span id="ai-confidence-val" class="metric-val">-</span>
+          </div>
+          <div class="ai-metric-card">
+            <span class="metric-label">LATENCY</span>
+            <span id="ai-latency-val" class="metric-val">- ms</span>
+          </div>
+        </div>
+
+        <!-- 3 Candidate Legal Moves & Probabilities -->
+        <div class="ai-candidates-section">
+          <div class="section-title">
+            <span>3 LEGAL MOVES EVALUATION</span>
+            <span id="ai-step-indicator" class="step-badge">Waiting</span>
+          </div>
+          <div id="ai-candidates-list" class="candidates-list">
+            <div class="candidate-placeholder">Turn on AI Autopilot or start game to view real-time decisions from Laya.</div>
+          </div>
+        </div>
+
+        <!-- Context & Prompt Inspector -->
+        <details class="ai-inspector-details">
+          <summary>Inspect Last State & Criteria Payload</summary>
+          <pre id="ai-payload-preview" class="payload-preview">// Awaiting first inference...</pre>
+        </details>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Modular Game Scripts -->
+  <script src="js/constants.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/input.js"></script>
+</body>
+</html>
